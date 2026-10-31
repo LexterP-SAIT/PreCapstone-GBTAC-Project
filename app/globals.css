@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+/* Only the street animation lives here: Tailwind has no class for a keyframe animation that we drive from scroll. */
+.leg {
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+  animation: step 0.5s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+
+.leg.b {
+  animation-direction: alternate-reverse;
+}
+
+.walking .leg {
+  animation-play-state: running;
+}
+
+.fan {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: spin 1.1s linear infinite;
+}
+
+@keyframes step {
+  from {
+    transform: rotate(-20deg);
+  }
+
+  to {
+    transform: rotate(20deg);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .leg,
+  .fan {
+    animation: none;
+  }
+}
