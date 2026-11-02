@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { GROUPS } from "@/data/options";
 import GroupTabs from "@/components/GroupTabs";
 import OptionCard from "@/components/OptionCard";
@@ -5,11 +8,26 @@ import SelectionSummary from "@/components/SelectionSummary";
 import RunBar from "@/components/RunBar";
 
 
-// This is just the static design of the option picker, I only did the look.
 
 const OptionPicker = () => {
-  const group = GROUPS[0];
-  const ticked = group.pick;
+  const [currentGroup, setCurrentGroup] = useState(0);
+  const [selections, setSelections] = useState(GROUPS.map((group) => [...group.pick]));
+  const group = GROUPS[currentGroup];
+  const ticked = selections[currentGroup];
+  
+  //select all and clear all functions
+  const handleSelectAll = () => {
+    setSelections((prev) =>
+    prev.map((selected, index) =>
+      index === currentGroup ? group.options.map((_, i) => i) : selected))
+  };
+
+  const handleClearAll = () => {
+    setSelections((prev) =>
+      prev.map((selected, index) =>
+        index === currentGroup ? [] : selected)
+    );
+  };
 
   return (
     <main id="inputs" className="bg-white pt-14">
@@ -46,8 +64,14 @@ const OptionPicker = () => {
               <span>
                 {ticked.length} of {group.options.length} selected.
               </span>
-              <span className="text-red-700 underline underline-offset-2">select all</span>
-              <span className="text-red-700 underline underline-offset-2">clear</span>
+              <button 
+              className="text-red-700 underline underline-offset-2"
+              onClick={handleSelectAll}>
+                select all</button>
+              <button 
+              className="text-red-700 underline underline-offset-2"
+                onClick={handleClearAll}>
+                clear</button>
             </div>
           </div>
 
